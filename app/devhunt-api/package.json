@@ -12,9 +12,11 @@
     "@types/bcrypt": "^5.0.2",
     "@types/express": "^5.0.0",
     "bcrypt": "^5.1.1",
+    "cors": "^2.8.5",
     "express": "^4.21.0",
     "mongodb": "^6.9.0",
-    "ts-node": "^10.9.2"
+    "ts-node": "^10.9.2",
+    "yup": "^1.4.0"
   },
   "devDependencies": {
     "@types/jest": "^29.5.13",
