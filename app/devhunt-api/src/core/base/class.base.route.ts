@@ -1,5 +1,5 @@
 import { Application } from "express";
-import Base from "./base";
+import Base from "./class.base";
 
 export default abstract class BaseRoute extends Base{
 
