@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import Base from './class.base';
+import Base from './abstract.class.base';
 
 export default abstract class baseModule extends Base {
 
