@@ -1,11 +1,13 @@
-
 import app from "./app";
+import { mongooseConnect } from "./connection";
+import { env } from "./envConfig";
 
-console.log(process.env);
+const PORT = env.PORT;
 
-const port = 8000;
+//Database Connection
+mongooseConnect();
 
 
-app.listen(port, ()=>{
-    console.log(`App is running on port ${port}`);
+app.listen(PORT, ()=>{
+    console.log(`App is running on PORT ${PORT}`);
 })
