@@ -1,4 +1,5 @@
-import { number, object, ObjectSchema, string } from "yup";
+import { number, object, ObjectSchema, string, ValidationError } from "yup";
+
 import Logging from "./library/logging";
 
 interface EnvConfig {
@@ -31,8 +32,10 @@ export const validateEnv = (env: NodeJS.ProcessEnv) =>{
     
     }catch(error){
 
-        Logging.error(error);
-    
+        if(error instanceof ValidationError){
+
+            Logging.error(error.message);
+        }
     }
 }
 

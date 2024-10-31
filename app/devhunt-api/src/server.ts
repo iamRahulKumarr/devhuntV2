@@ -1,6 +1,8 @@
 import app from "./app";
 import { mongooseConnect } from "./connection";
-import { env } from "./envConfig";
+import { env, validateEnv } from "./envConfig";
+
+validateEnv(process.env);
 
 const PORT = env.PORT;
 
