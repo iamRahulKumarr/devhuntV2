@@ -7,7 +7,7 @@ export default class Logging {
         console.log(
             chalk.blue(`
 [${new Date().toLocaleString()}]
-[Log]:`),
+[info]:`),
             typeof args === 'string' ? chalk.blueBright(args) : args,
         );
     };
@@ -17,7 +17,7 @@ export default class Logging {
         console.log(
             chalk.yellow(`
 [${new Date().toLocaleString()}]
-[Info]:`),
+[Warn]:`),
             typeof args === 'string' ? chalk.yellowBright(args) : args,
         );
     };
@@ -27,7 +27,7 @@ export default class Logging {
         console.log(
             chalk.red(`
 [${new Date().toLocaleString()}]
-[Warn]:`),
+[Error]:`),
             typeof args === 'string' ? chalk.redBright(args) : args,
         );
     };
@@ -37,7 +37,7 @@ export default class Logging {
         console.log(
             chalk.green(`
 [${new Date().toLocaleString()}]
-[Error]:`),
+[Log]:`),
             typeof args === 'string' ? chalk.greenBright(args) : args,
         );
     };
