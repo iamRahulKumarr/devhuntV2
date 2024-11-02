@@ -9,11 +9,5 @@
       "coverage", 
       "dist"
     ],
-    "exec": "ts-node -r tsconfig-paths/register ./src/server.ts",
-    "env": {
-        "NODE_ENV": "development",
-        "PORT": 8000,
-        "DATABASE_DEVELOPMENT_URI": "mongodb://localhost:27017/devhunt",
-        "DATABASE_PRODUCTION_URI": "mongodb+srv://rahulweb404:0heCEr4tpfXQwhop@cluster0.cigoppg.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
-    }
+    "exec": "node --env-file=../../.env-development -r ts-node/register ./src/server.ts"
 }
