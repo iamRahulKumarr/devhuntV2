@@ -7,17 +7,17 @@ export default abstract class baseModule extends Base {
         super();
     }
 
-    protected abstract module(req: Request, res: Response): Promise<void | any>;
+    // protected abstract module(req: Request, res: Response): Promise<void | any>;
 
-    public async execute(req: Request, res: Response): Promise<void | any> {
-        try {
+    // public async execute(req: Request, res: Response): Promise<void | any> {
+    //     try {
 
-            await this.module(req, res);
+    //         await this.module(req, res);
 
-        } catch (err) {
+    //     } catch (err) {
 
-        }
-    }
+    //     }
+    // }
 
     /** Success Response Generic **/
     protected ok<T>(res: Response, data: object): Response {
@@ -35,8 +35,14 @@ export default abstract class baseModule extends Base {
         return this.response(res, this.INTERNAL_SERVER_ERROR_CODE, this.INTERNAL_SERVER_ERROR_MSG);
     }
 
-    /** Not Found Response Generic **/
-    protected notFound<T>(res: Response): Response {
+    /**  Validation Error Response **/
+    protected invalidInput(res:Response): Response{
+
+        return this.response(res, this.INVALID_FORM_INPUT, this.INVALID_FORM_INPUT_MSG);
+    }
+
+    /** Not Found Response **/
+    protected notFound(res: Response): Response {
 
         return this.response(res, this.NOT_FOUND_RESOURCE_CODE, this.NOT_FOUND_RESOURCE_MSG);
     }

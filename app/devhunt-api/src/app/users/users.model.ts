@@ -6,7 +6,6 @@ const userScehma = new Schema({
     firstName: {
         type: String,
         required: [true, 'First name is required.'],
-
     },
     lastName: {
         type: String,
@@ -24,11 +23,20 @@ const userScehma = new Schema({
     password: {
         type: String,
         required: [true, 'Password is required.'],
-        minLength: [8, 'Password must be of atleast 8 characters.']
+        minLength: [8, 'Password must be of atleast 8 characters.'],
+        select: false
     },
-},{
-    timestamps:true,
-    collection:'Users'
+    userType: {
+        type: String,
+        required: [true, 'UserType is required.'],
+        enum: {
+            values: ['admin', 'freelancer', 'client'],
+            message: "A userType only be: admin, freelancer or client."
+        },
+    }
+}, {
+    timestamps: true,
+    collection: 'Users'
 })
 
 
