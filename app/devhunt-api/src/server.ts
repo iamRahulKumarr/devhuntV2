@@ -1,6 +1,6 @@
-import app from "./app";
 import { mongooseConnect } from "./connection";
 import { env, validateEnv } from "./envConfig";
+import app from "./app";
 
 validateEnv(process.env);
 

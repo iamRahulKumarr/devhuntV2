@@ -13,5 +13,4 @@ export default abstract class BaseMiddlewareService extends Base {
 
         }
     }
-
 }

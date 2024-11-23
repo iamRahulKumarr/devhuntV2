@@ -10,7 +10,7 @@ export interface BaseItem {
     updatedAt: string,
 }
 
-export interface BaseItemDocument extends BaseItem, Document<string>{
+export interface BaseItemDocument extends Document<string>, BaseItem{
 
 }
 

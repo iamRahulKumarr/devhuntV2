@@ -1,9 +1,18 @@
-import baseModule from "@src/core/base/abstract.class.base.module";
-import { NextFunction, Request, Response } from "express";
+import { CookieOptions, Request, Response } from "express";
+import jwt from 'jsonwebtoken';
+
+import baseModule from "../../core/base/abstract.class.base.module";
+
 import User from "../users/users.model";
 
-export class AuthModule extends baseModule {
+import { env } from "../../envConfig";
 
+import { UserDocument } from "src/types/users/user";
+
+
+export default class AuthModule extends baseModule {
+
+    /** User Login **/
     public async login(req: Request, res: Response): Promise<void> {
 
         try {
@@ -14,23 +23,82 @@ export class AuthModule extends baseModule {
                 return;
             }
 
-            const user = await this.findUserByEmail(email);
+            const user: UserDocument | null = await User.findOne({ email }).select('+password');
 
-            if(!user){
-                this.notFound(res);
+            if (!user || !(await user.comparePasswords(password, user.password))) {
+                this.unauthorized(res, "Invalid email or password.");
                 return;
             }
 
-            
+            const accessToken = this.signAccessToken(user._id);
+
+            this.createCookie(accessToken, res);
+
+            this.ok(res, user);
+            return;
 
         } catch (error) {
 
+            this.ops(res);
+            return;
         }
     }
 
-    private findUserByEmail(email: string) {
+    /** User Register **/
+    public async register(req: Request, res: Response): Promise<void> {
 
-        return User.findOne({ email }).select('+password');
+        console.log(req.body);
+
+        try {
+            const { firstName, lastName, email, password, userType } = req.body;
+
+            if (!firstName || !lastName || !email || !password || !userType) {
+                this.invalidInput(res);
+                return;
+            }
+
+            const user = await User.create({
+                firstName,
+                lastName,
+                email,
+                password,
+                userType
+            });
+
+            const accessToken = this.signAccessToken(user._id);
+
+            this.createCookie(accessToken, res);
+
+            this.ok(res, user);
+            return;
+
+        } catch (error) {
+
+            this.ops(res);
+            return;
+        }
+    }
+
+    /** Helper methods **/
+    private signAccessToken(_id: string) {
+
+        return jwt.sign({_id}, env.JWT_SECRET, {
+            expiresIn: env.JWT_EXPIRES_IN
+        });
 
     }
+
+    private createCookie(accessToken: string, res: Response) {
+
+        const cookieOptions: CookieOptions = {
+            expires: new Date(Date.now() + 60 * 60 * 1000),
+            httpOnly: true
+        }
+
+        if (env.NODE_ENV === 'production') cookieOptions.secure = true;
+
+        res.cookie('Access-Token', accessToken, cookieOptions);
+
+    }
+
 }

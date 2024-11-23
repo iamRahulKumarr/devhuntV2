@@ -1,7 +1,9 @@
-import { Model, Schema } from "mongoose";
+import { model, Schema } from "mongoose";
 import bcryptjs from 'bcryptjs';
 
-const userScehma = new Schema({
+import { UserDocument } from "src/types/users/user";
+
+const userScehma = new Schema<UserDocument>({
 
     firstName: {
         type: String,
@@ -9,7 +11,7 @@ const userScehma = new Schema({
     },
     lastName: {
         type: String,
-        required: [true, 'Last name is required.'],
+        required: [true, 'Last name is required.']
     },
     fullName: {
         type: String,
@@ -39,18 +41,34 @@ const userScehma = new Schema({
     collection: 'Users'
 })
 
+userScehma.pre('validate', function () {
+
+    /* Update full name on first name and last name modification. */
+    if (this.isModified('firstName') || this.isModified('lastName')) {
+
+        this.fullName = this.firstName.concat(" ", this.lastName);
+    }
+})
 
 userScehma.pre('save', async function (next) {
 
-    this.fullName = this.firstName.concat(" ", this.lastName);
+    /* Encrypt password if new password is assigned. */
+    if (this.isModified('password')) {
 
-    const salt = await bcryptjs.genSalt(12);
+        const salt = await bcryptjs.genSalt(12);
 
-    this.password = await bcryptjs.hash(this.password, salt);
+        this.password = await bcryptjs.hash(this.password, salt);
+    }
 
     next();
 })
 
-const User = new Model('Users', userScehma);
+userScehma.methods.comparePasswords = function (candidatePassword: string, currentPassword: string): Promise<boolean> {
+
+    return bcryptjs.compare(candidatePassword, currentPassword);
+}
+
+
+const User = model('Users', userScehma);
 
 export default User;

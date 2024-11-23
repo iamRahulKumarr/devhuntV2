@@ -1,4 +1,4 @@
-import { Response, NextFunction } from "express";
+import { Response } from "express";
 
 interface dto {
     status: number;
@@ -13,6 +13,8 @@ export default abstract class Base {
 
     protected INVALID_FORM_INPUT: number = 400;
 
+    protected UNAUTHORIZED: number = 401;
+
     protected NOT_FOUND_RESOURCE_CODE: number = 404;
 
     protected INTERNAL_SERVER_ERROR_CODE: number = 500;
@@ -23,7 +25,7 @@ export default abstract class Base {
     protected NOT_FOUND_RESOURCE_MSG: string = 'resource not found';
 
     protected INVALID_FORM_INPUT_MSG: string = 'Invalid input provided. Please ensure all required fields are correctly filled and try again.'
-    
+
     protected INTERNAL_SERVER_ERROR_MSG: string = 'internal server error';
 
 

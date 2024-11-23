@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import { Response } from 'express';
 import Base from './abstract.class.base';
 
 export default abstract class baseModule extends Base {
@@ -19,8 +19,8 @@ export default abstract class baseModule extends Base {
     //     }
     // }
 
-    /** Success Response Generic **/
-    protected ok<T>(res: Response, data: object): Response {
+    /** Success Response **/
+    protected ok(res: Response, data: object): Response {
 
         if (!data) {
             return this.response(res, this.SUCCESS_CODE, this.SUCCESS_MSG)
@@ -29,12 +29,12 @@ export default abstract class baseModule extends Base {
         return this.response(res, this.SUCCESS_CODE, this.SUCCESS_MSG, data)
     }
 
-    /**  Fatal Error Response Generic **/
-    protected ops<T>(res: Response): Response {
+    /** Unauthorised Response **/
+    protected unauthorized(res: Response, message:string){
 
-        return this.response(res, this.INTERNAL_SERVER_ERROR_CODE, this.INTERNAL_SERVER_ERROR_MSG);
+        return this.response(res, this.UNAUTHORIZED, message,);
     }
-
+    
     /**  Validation Error Response **/
     protected invalidInput(res:Response): Response{
 
@@ -45,5 +45,11 @@ export default abstract class baseModule extends Base {
     protected notFound(res: Response): Response {
 
         return this.response(res, this.NOT_FOUND_RESOURCE_CODE, this.NOT_FOUND_RESOURCE_MSG);
+    }
+
+    /**  Fatal Error Response **/
+    protected ops(res: Response): Response {
+
+        return this.response(res, this.INTERNAL_SERVER_ERROR_CODE, this.INTERNAL_SERVER_ERROR_MSG);
     }
 }
