@@ -10,6 +10,6 @@ const PORT = env.PORT;
 mongooseConnect();
 
 
-app.listen(PORT, ()=>{
+app.listen(PORT, () => {
     console.log(`App is running on PORT ${PORT}`);
 })

@@ -11,11 +11,11 @@ const userScehma = new Schema<UserDocument>({
     },
     lastName: {
         type: String,
-        required: [true, 'Last name is required.']
+        required: [true, 'Last name is required.'],
     },
     fullName: {
         type: String,
-        required: [true, 'Full Name is required.']
+        required: [true, 'Full Name is required.'],
     },
     email: {
         type: String,
@@ -33,7 +33,7 @@ const userScehma = new Schema<UserDocument>({
         required: [true, 'UserType is required.'],
         enum: {
             values: ['admin', 'freelancer', 'client'],
-            message: "A userType only be: admin, freelancer or client."
+            message: "A userType only be: admin, freelancer or client.",
         },
     }
 }, {

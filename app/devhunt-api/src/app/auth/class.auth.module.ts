@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken';
 
 import baseModule from "../../core/base/abstract.class.base.module";
 
-import User from "../users/users.model";
+import User from "../users/user.model";
 
 import { env } from "../../envConfig";
 
@@ -44,25 +44,54 @@ export default class AuthModule extends baseModule {
         }
     }
 
-    /** User Register **/
-    public async register(req: Request, res: Response): Promise<void> {
-
-        console.log(req.body);
+    public async registerClient(req: Request, res: Response): Promise<void> {
 
         try {
-            const { firstName, lastName, email, password, userType } = req.body;
+            const { firstName, lastName, email, password } = req.body;
 
-            if (!firstName || !lastName || !email || !password || !userType) {
+            if (!firstName || !lastName || !email || !password) {
                 this.invalidInput(res);
                 return;
             }
 
-            const user = await User.create({
+            const user: UserDocument = await User.create({
                 firstName,
                 lastName,
                 email,
                 password,
-                userType
+                userType: 'cleint',
+            });
+
+            const accessToken = this.signAccessToken(user._id);
+
+            this.createCookie(accessToken, res);
+
+            this.ok(res, user);
+            return;
+        } catch (error) {
+
+            this.ops(res);
+            return;
+
+        }
+    }
+
+    public async registerFreelancer(req: Request, res: Response): Promise<void> {
+
+        try {
+            const { firstName, lastName, email, password } = req.body;
+
+            if (!firstName || !lastName || !email || !password) {
+                this.invalidInput(res);
+                return;
+            }
+
+            const user: UserDocument = await User.create({
+                firstName,
+                lastName,
+                email,
+                password,
+                userType: 'freelancer',
             });
 
             const accessToken = this.signAccessToken(user._id);
@@ -73,7 +102,6 @@ export default class AuthModule extends baseModule {
             return;
 
         } catch (error) {
-
             this.ops(res);
             return;
         }
@@ -82,7 +110,7 @@ export default class AuthModule extends baseModule {
     /** Helper methods **/
     private signAccessToken(_id: string) {
 
-        return jwt.sign({_id}, env.JWT_SECRET, {
+        return jwt.sign({ _id }, env.JWT_SECRET, {
             expiresIn: env.JWT_EXPIRES_IN
         });
 
