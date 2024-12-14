@@ -1,8 +1,8 @@
-import { Schema } from "mongoose";
+import { Types } from "mongoose";
 import { BaseItem } from "../base-items";
 
 export interface Client extends BaseItem{
-    userId: Schema.Types.ObjectId;
+    userId: Types.ObjectId;
     fullName: string;
     email: string;
     photo: string;
