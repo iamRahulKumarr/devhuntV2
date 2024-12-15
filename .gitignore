@@ -79,3 +79,4 @@ ca-certificate.crt
 .env-development
 .env-production
 
+build/

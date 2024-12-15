@@ -1,49 +1,51 @@
-import { NextFunction, Request, Response } from "express";
+import { NextFunction, Request } from "express";
 import jwt from 'jsonwebtoken';
 
-import BaseMiddlewareService from "src/core/base/abstact.class.base.middleware";
-import { env } from "src/envConfig";
+import { env } from "../../envConfig";
 import User from "../users/user.model";
+import BaseMiddlewareService from "../../core/base/abstact.class.base.middleware";
+import AppError from "../handlers/error-handler/class.AppError";
 
 export default class authMiddlewareService extends BaseMiddlewareService {
 
-    constructor(){
+    constructor() {
         super();
 
         /** Explicitly bind middleware methods **/
         this.protect = this.protect.bind(this);
     }
 
-    public async protect(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
+    public protect() {
 
-        const service = async (): Promise<Response | void> => {
+        return async (req: Request, _:any, next: NextFunction): Promise<void> => {
 
             let accessToken: string | null = req.cookies.accessToken;
 
-            if (!accessToken) {
-                return this.response(res, this.UNAUTHORIZED, 'Not Authorized');
-            }
 
+            if (!accessToken) {
+                return next(new AppError('Not Authorized', 401))
+            }
             const decoded = jwt.verify(accessToken, env.JWT_SECRET, (error, decodedData) => {
                 if (error) {
-                    return this.response(res, this.UNAUTHORIZED, 'Not Authorized');
+                    return next(new AppError('Not Authorized', 401))
                 } else {
                     return decodedData;
                 }
-
             });
+
 
             const user = await User.findById(decoded);
 
             if (!user) {
-                return this.response(res, this.UNAUTHORIZED, 'User belonging to this token does not exist.');
+                return next(new AppError('User belonging to this token does not exist.', 401))
+
+            } else {
+                (req as any).user = user;
             }
 
-            (req as any).user = user;
-        }
+            next();
 
-        await this.adapter(service(), res);
-        next();
+        }
 
     }
 }

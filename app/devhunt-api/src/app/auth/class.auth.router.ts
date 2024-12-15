@@ -17,9 +17,11 @@ export default class AuthRouter extends BaseRouter {
 
     protected composeRouteService(): void {
 
-        this.RouterInstance.post('/login', (req: Request, res: Response) => this.authModule.login(req, res));
+        // this.RouterInstance.post('/login', (req: Request, res: Response) => this.authModule.login(req, res));
 
-        this.RouterInstance.post('/register/client', (req: Request, res: Response) => this.authModule.registerClient(req, res));
+        this.RouterInstance.post('/login', this.authModule.login());
+
+        this.RouterInstance.post('/register/client',(req: Request, res: Response) => this.authModule.registerClient(req, res));
 
         this.RouterInstance.post('/register/freelancer', (req: Request, res: Response) => this.authModule.registerFreelancer(req, res));
 
