@@ -7,19 +7,10 @@ const postSchema = new Schema<Post>({
     required:[true, 'A Post must have a clientId.'],
     ref: 'Clients',
   },
-//   categoryId: {
-//     type: Schema.Types.ObjectId,
-//     default: null,
-//     ref: 'category',
-//   },
   title: {
     type: String,
     required:[true, 'A Post must have a title.'],
   },
-  // technology: {
-  //   type: String,
-  //   default: '',
-  // },
   location: {
     type: String,
     required:[true, 'A Post must have a location.'],
@@ -48,4 +39,4 @@ const postSchema = new Schema<Post>({
 
 const Post = model('Posts', postSchema);
 
-module.exports = Post;
+export default Post;
