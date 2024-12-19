@@ -14,7 +14,7 @@ export default class PostModule extends baseModule {
 
             const { title, location, budget, duration, description } = req.body;
 
-            if (!title || !location || !budget || !duration || description) {
+            if (!title || !location || !budget || !duration || !description) {
                 return next(new AppError(this.INVALID_FORM_INPUT_MSG, this.INVALID_FORM_INPUT));
             }
 
@@ -36,5 +36,31 @@ export default class PostModule extends baseModule {
             return this.ok(res, { post });
         })
 
+    }
+
+    /** Get All Posts Method **/
+    public getAllPosts(){
+        return catchAsync(async (req:Request, res: Response, next: NextFunction)=>{
+            const posts: PostDocument[] = await Post.find();
+
+            return this.ok(res, {items: posts});
+        })
+    }
+
+    /** Get Post Method **/
+    public getPost(): (req: Request, res: Response, next: NextFunction) => any {
+
+        return catchAsync(async (req: Request, res: Response, next: NextFunction)=>{
+
+            const postId: string = req.params.id;
+
+            const post : PostDocument | null = await Post.findById(postId);
+
+            if(!post){
+                return next(new AppError(this.NOT_FOUND_RESOURCE_MSG, this.NOT_FOUND_RESOURCE_CODE));
+            }
+
+            return this.ok(res, {post});
+        })
     }
 }

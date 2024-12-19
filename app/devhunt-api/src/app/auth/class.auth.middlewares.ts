@@ -2,7 +2,7 @@ import { NextFunction, Request } from "express";
 import jwt from 'jsonwebtoken';
 
 import { env } from "../../envConfig";
-import User from "../users/user.model";
+import User from "../user/user.model";
 import BaseMiddlewareService from "../../core/base/abstact.class.base.middleware";
 import AppError from "../handlers/error-handler/class.AppError";
 import catchAsync from "../handlers/error-handler/catchAsync";
