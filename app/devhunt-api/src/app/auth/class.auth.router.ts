@@ -1,5 +1,3 @@
-import { Request, Response } from "express";
-
 import BaseRouter from "../../core/base/abstract.class.base.router";
 import AuthModule from "./class.auth.module";
 

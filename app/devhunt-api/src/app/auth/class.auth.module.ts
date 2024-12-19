@@ -7,7 +7,7 @@ import User from "../users/user.model";
 
 import { env } from "../../envConfig";
 
-import { UserDocument } from "src/types/users/user";
+import { CreateUserPayload, UserDocument } from "../../types/users/user";
 import catchAsync from "../handlers/error-handler/catchAsync";
 import AppError from "../handlers/error-handler/class.AppError";
 
@@ -34,7 +34,7 @@ export default class AuthModule extends baseModule {
 
             this.createCookie(accessToken, res);
 
-            return this.ok(res, user);
+            return this.ok(res, {user});
         })
     }
 
@@ -43,25 +43,25 @@ export default class AuthModule extends baseModule {
 
         return catchAsync(async (req: Request, res: Response, next: NextFunction) => {
 
-            const { firstName, lastName, email, password } = req.body;
+            const userPayload: CreateUserPayload = {
+                firstName: req.body.firstName,
+                lastName: req.body.lastName,
+                email: req.body.email,
+                password: req.body.password,
+                userType: 'client'
+            }
 
-            if (!firstName || !lastName || !email || !password) {
+            if (!userPayload.firstName || !userPayload.lastName || !userPayload.email || !userPayload.password) {
                 return next(new AppError(this.INVALID_FORM_INPUT_MSG, this.INVALID_FORM_INPUT));
             }
 
-            const user: UserDocument = await User.create({
-                firstName,
-                lastName,
-                email,
-                password,
-                userType: 'client',
-            });
+            const user: UserDocument = await User.create(userPayload);
 
             const accessToken = this.signAccessToken(user._id);
 
             this.createCookie(accessToken, res);
 
-            return this.ok(res, user);
+            return this.ok(res, {user});
         })
     }
 
@@ -69,25 +69,25 @@ export default class AuthModule extends baseModule {
 
         return catchAsync(async (req: Request, res: Response, next: NextFunction) => {
 
-            const { firstName, lastName, email, password } = req.body;
+            const userPayload: CreateUserPayload = {
+                firstName: req.body.firstName,
+                lastName: req.body.lastName,
+                email: req.body.email,
+                password: req.body.password,
+                userType: 'freelancer'
+            }
 
-            if (!firstName || !lastName || !email || !password) {
+            if (!userPayload.firstName || !userPayload.lastName || !userPayload.email || !userPayload.password) {
                 return next(new AppError(this.INVALID_FORM_INPUT_MSG, this.INVALID_FORM_INPUT));
             }
 
-            const user: UserDocument = await User.create({
-                firstName,
-                lastName,
-                email,
-                password,
-                userType: 'freelancer',
-            });
+            const user: UserDocument = await User.create(userPayload);
 
             const accessToken = this.signAccessToken(user._id);
 
             this.createCookie(accessToken, res);
 
-            return this.ok(res, user);
+            return this.ok(res, {user});
         })
     }
 

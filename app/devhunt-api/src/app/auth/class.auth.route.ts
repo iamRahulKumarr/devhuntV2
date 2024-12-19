@@ -18,7 +18,7 @@ export default class AuthRoute extends BaseRoute{
 
     public run(app: Application){
 
-        app.use(`${this.VERSION}${this.SP}`, this.authRouter.RouterInstance);
+      return  app.use(`${this.VERSION}${this.SP}`, this.authRouter.RouterInstance);
 
     }
 
