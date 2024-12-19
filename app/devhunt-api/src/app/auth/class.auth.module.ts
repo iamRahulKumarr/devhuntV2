@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken';
 
 import baseModule from "../../core/base/abstract.class.base.module";
 
-import User from "../users/user.model";
+import User from "../user/user.model";
 
 import { env } from "../../envConfig";
 
