@@ -9,76 +9,45 @@ import { env } from "../../envConfig";
 
 import { UserDocument } from "src/types/users/user";
 import catchAsync from "../handlers/error-handler/catchAsync";
+import AppError from "../handlers/error-handler/class.AppError";
 
 
 export default class AuthModule extends baseModule {
 
-    public login (){
-        
-        return catchAsync(async (req: Request, res: Response, next: NextFunction)=>{
+    public login(): (req: Request, res: Response, next: NextFunction) => any {
+
+        return catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+
             const { email, password } = req.body;
 
             if (!email || !password) {
-                this.invalidInput(res);
-                return;
+                return next(new AppError(this.INVALID_FORM_INPUT_MSG, this.INVALID_FORM_INPUT));
             }
 
             const user: UserDocument | null = await User.findOne({ email }).select('+password');
 
             if (!user || !(await user.comparePasswords(password, user.password))) {
-                this.unauthorized(res, "Invalid email or password.");
-                return;
+                return next(new AppError('Invalid email or password. Please try again!', this.UNAUTHORIZED));
             }
 
             const accessToken = this.signAccessToken(user._id);
 
             this.createCookie(accessToken, res);
 
-            this.ok(res, user);
+            return this.ok(res, user);
         })
     }
 
-    // /** User Login **/
-    // public async login(req: Request, res: Response): Promise<void> {
 
-    //     try {
-    //         const { email, password } = req.body;
+    public registerClient(): (req: Request, res: Response, next: NextFunction) => any {
 
-    //         if (!email || !password) {
-    //             this.invalidInput(res);
-    //             return;
-    //         }
+        return catchAsync(async (req: Request, res: Response, next: NextFunction) => {
 
-    //         const user: UserDocument | null = await User.findOne({ email }).select('+password');
-
-    //         if (!user || !(await user.comparePasswords(password, user.password))) {
-    //             this.unauthorized(res, "Invalid email or password.");
-    //             return;
-    //         }
-
-    //         const accessToken = this.signAccessToken(user._id);
-
-    //         this.createCookie(accessToken, res);
-
-    //         this.ok(res, user);
-    //         return;
-
-    //     } catch (error) {
-
-    //         this.ops(res);
-    //         return;
-    //     }
-    // }
-
-    public async registerClient(req: Request, res: Response): Promise<void> {
-
-        try {
             const { firstName, lastName, email, password } = req.body;
 
-            // if (!firstName || !lastName || !email || !password) {
-            //     this.invalidInput(res);
-            //     return;
-            // }
+            if (!firstName || !lastName || !email || !password) {
+                return next(new AppError(this.INVALID_FORM_INPUT_MSG, this.INVALID_FORM_INPUT));
+            }
 
             const user: UserDocument = await User.create({
                 firstName,
@@ -92,24 +61,18 @@ export default class AuthModule extends baseModule {
 
             this.createCookie(accessToken, res);
 
-            this.ok(res, user);
-            return;
-        } catch (error) {
-            console.log(error);
-            this.ops(res);
-            return;
-
-        }
+            return this.ok(res, user);
+        })
     }
 
-    public async registerFreelancer(req: Request, res: Response): Promise<void> {
+    public registerFreelancer(): (req: Request, res: Response, next: NextFunction) => any {
 
-        try {
+        return catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+
             const { firstName, lastName, email, password } = req.body;
 
             if (!firstName || !lastName || !email || !password) {
-                this.invalidInput(res);
-                return;
+                return next(new AppError(this.INVALID_FORM_INPUT_MSG, this.INVALID_FORM_INPUT));
             }
 
             const user: UserDocument = await User.create({
@@ -124,13 +87,8 @@ export default class AuthModule extends baseModule {
 
             this.createCookie(accessToken, res);
 
-            this.ok(res, user);
-            return;
-
-        } catch (error) {
-            this.ops(res);
-            return;
-        }
+            return this.ok(res, user);
+        })
     }
 
     /** Helper methods **/

@@ -5,7 +5,8 @@ import morgan from "morgan";
 import cors from "cors";
 
 import AuthRoute from "./app/auth/class.auth.route";
-import globalErrorHandler from "./app/handlers/error-handler/functions";
+
+import GlobalErrorHandler from "./app/handlers/error-handler/class.GlobalErrorHandler";
 
 const app: Express = express();
 
@@ -27,6 +28,6 @@ const authRoute = new AuthRoute();
 authRoute.run(app);
 /** Routes **/
 
-app.use(globalErrorHandler);
+app.use(GlobalErrorHandler.handleError());
 
 export default app;

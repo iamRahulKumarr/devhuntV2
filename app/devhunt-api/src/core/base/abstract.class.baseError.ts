@@ -2,9 +2,9 @@ export default abstract class BaseError extends Error{
 
    public readonly message: string;
 
-   public readonly httpCode: number;
+   public httpCode: number;
 
-   public readonly status: string;
+   public status: string;
 
    public readonly isOperational: boolean;
 

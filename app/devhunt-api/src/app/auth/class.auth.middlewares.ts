@@ -6,7 +6,7 @@ import User from "../users/user.model";
 import BaseMiddlewareService from "../../core/base/abstact.class.base.middleware";
 import AppError from "../handlers/error-handler/class.AppError";
 
-export default class authMiddlewareService extends BaseMiddlewareService {
+export default class AuthMiddlewareService extends BaseMiddlewareService {
 
     constructor() {
         super();
@@ -17,7 +17,7 @@ export default class authMiddlewareService extends BaseMiddlewareService {
 
     public protect() {
 
-        return async (req: Request, _:any, next: NextFunction): Promise<void> => {
+        return async (req: Request, _: any, next: NextFunction): Promise<void> => {
 
             let accessToken: string | null = req.cookies.accessToken;
 
