@@ -9,7 +9,7 @@ export default class PostRouter extends BaseRouter {
     private authMiddlewareService: AuthMiddlewareService;
 
     constructor() {
-        
+
         super();
 
         this.postModule = new PostModule();
@@ -21,11 +21,10 @@ export default class PostRouter extends BaseRouter {
 
     protected composeRouteService(): void {
 
-        this.RouterInstance.post('/create', this.authMiddlewareService.protect(), this.authMiddlewareService.restrictTo('client'), this.postModule.createPost());
-
-        this.RouterInstance.get('/all', this.postModule.getAllPosts());
-        
-        this.RouterInstance.get('/:id', this.postModule.getPost());
+        this.RouterInstance
+            .post('/create', this.authMiddlewareService.protect(), this.authMiddlewareService.restrictTo('client'), this.postModule.createPost())
+            .get('/all', this.postModule.getAllPosts())
+            .get('/:id', this.postModule.getPost());
 
     }
 }
