@@ -8,6 +8,7 @@ import AuthRoute from "./app/auth/class.auth.route";
 
 import GlobalErrorHandler from "./app/handlers/error-handler/class.GlobalErrorHandler";
 import PostRoute from "./app/post/class.post.route";
+import UserRoute from "./app/user/class.user.route";
 
 const app: Express = express();
 
@@ -24,10 +25,12 @@ app.use(express.json());
 app.use(cors());
 
 const authRoute = new AuthRoute();
+const userRoute = new UserRoute();
 const postRoute = new PostRoute();
 
 /** Routes **/
 authRoute.run(app);
+userRoute.run(app);
 postRoute.run(app);
 /** Routes **/
 
