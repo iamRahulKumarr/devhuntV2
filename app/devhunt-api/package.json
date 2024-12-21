@@ -20,8 +20,7 @@
         "mongoose": ">=8.8.3",
         "morgan": "^1.10.0",
         "ts-node": "^10.9.2",
-        "yup": "^1.4.0",
-        "got": ">=11.8.5"
+        "yup": "^1.4.0"
     },
     "devDependencies": {
         "@types/bcrypt": "^5.0.2",
