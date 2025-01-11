@@ -10,35 +10,35 @@
           "style": "scss"
         }
       },
-      "root": "",
-      "sourceRoot": "src",
-      "prefix": "dh",
+      "root": "projects/devhunt-website",
+      "sourceRoot": "projects/devhunt-website/src",
+      "prefix": "app",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
             "outputPath": "dist/devhunt-website",
-            "index": "src/index.html",
-            "browser": "src/main.ts",
+            "index": "projects/devhunt-website/src/index.html",
+            "browser": "projects/devhunt-website/src/main.ts",
             "polyfills": [
               "zone.js"
             ],
-            "tsConfig": "tsconfig.app.json",
+            "tsConfig": "projects/devhunt-website/tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
               {
                 "glob": "**/*",
-                "input": "public"
+                "input": "projects/devhunt-website/public"
               }
             ],
             "styles": [
-              "src/styles.scss"
+              "projects/devhunt-website/src/styles.scss"
             ],
             "scripts": [],
-            "server": "src/main.server.ts",
+            "server": "projects/devhunt-website/src/main.server.ts",
             "prerender": true,
             "ssr": {
-              "entry": "src/server.ts"
+              "entry": "projects/devhunt-website/src/server.ts"
             }
           },
           "configurations": {
@@ -87,21 +87,22 @@
               "zone.js",
               "zone.js/testing"
             ],
-            "tsConfig": "tsconfig.spec.json",
+            "tsConfig": "projects/devhunt-website/tsconfig.spec.json",
             "inlineStyleLanguage": "scss",
             "assets": [
               {
                 "glob": "**/*",
-                "input": "public"
+                "input": "projects/devhunt-website/public"
               }
             ],
             "styles": [
-              "src/styles.scss"
+              "projects/devhunt-website/src/styles.scss"
             ],
             "scripts": []
           }
         }
       }
     }
+
   }
 }
