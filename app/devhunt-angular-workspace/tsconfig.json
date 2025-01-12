@@ -3,6 +3,11 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "paths": {
+      "devhunt-website/*":["./projects/devhunt-website/*"],
+      "devhunt-angular-workspace/*":["../devhunt-angular-workspace/*"],
+      "devhunt-api/*":["../devhunt-api/*"]
+    },
     "outDir": "./dist/out-tsc",
     "strict": true,
     "noImplicitOverride": true,
