@@ -24,11 +24,13 @@ export default class AuthModule extends baseModule {
                 return next(new AppError(this.INVALID_FORM_INPUT_MSG, this.INVALID_FORM_INPUT));
             }
 
-            const user: UserDocument | null = await User.findOne({ email }).select('+password');
+            const userDocument: UserDocument | null = await User.findOne({ email }).select('+password');
 
-            if (!user || !(await user.comparePasswords(password, user.password))) {
+            if (!userDocument || !(await userDocument.comparePasswords(password, userDocument.password))) {
                 return next(new AppError('Invalid email or password. Please try again!', this.UNAUTHORIZED));
             }
+
+            const {password:_, ...user} = userDocument.toObject();
 
             const accessToken = this.signAccessToken(user._id);
 
